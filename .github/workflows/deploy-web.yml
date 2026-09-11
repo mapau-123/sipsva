@@ -1,33 +1,38 @@
 name: Deploy web demo to GitHub Pages
-
+ 
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
+ 
 permissions:
   contents: read
   pages: write
   id-token: write
-
+ 
 concurrency:
   group: pages
   cancel-in-progress: true
-
+ 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+ 
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.44.0'
           channel: 'stable'
-
+ 
       - name: Instalar dependencias
         run: flutter pub get
-
+ 
+      - name: Habilitar soporte web
+        # Esto crea la carpeta web/ que le faltaba al proyecto,
+        # sin tocar tu código existente en lib/.
+        run: flutter create . --platforms=web
+ 
       - name: Compilar Flutter Web
         # IMPORTANTE: reemplaza <REPO_NAME> por el nombre exacto de este
         # repositorio en GitHub (ej: si tu repo es
@@ -35,11 +40,11 @@ jobs:
         # Si usas un dominio propio o una user/organization page
         # (usuario.github.io), deja --base-href /
         run: flutter build web --release --base-href /sipsva/
-
+ 
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build/web
-
+ 
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -49,3 +54,4 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+ 
