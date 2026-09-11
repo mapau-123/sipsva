@@ -34,7 +34,7 @@ jobs:
         # github.com/usuario/sipsva-web, usa --base-href /sipsva-web/).
         # Si usas un dominio propio o una user/organization page
         # (usuario.github.io), deja --base-href /
-        run: flutter build web --release --base-href /<REPO_NAME>/
+        run: flutter build web --release --base-href /sipsva/
 
       - uses: actions/upload-pages-artifact@v3
         with:
