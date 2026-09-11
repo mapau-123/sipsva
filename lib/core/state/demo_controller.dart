@@ -188,11 +188,8 @@ class DemoController extends ChangeNotifier {
     final lane2 = data['lane2Occupied'] == true;
     final newTrafficJam = data['trafficJam'] == true;
     final newObstruction = (lane1 || lane2) && !newTrafficJam;
-    final lightState = (data['light']?.toString() ?? '').toLowerCase();
-    final newIsNight =
-        lightState.contains('noche') ||
-        lightState.contains('oscur') ||
-        lightState.contains('baja');
+    final lightState = (data['light']?.toString() ?? '').toUpperCase();
+    final newIsNight = lightState == 'NIGHT';
 
     if (newRaining != raining) {
       _addEvent(
